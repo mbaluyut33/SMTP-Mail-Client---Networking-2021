@@ -1,6 +1,8 @@
+#to test code locally input the following without brackets in terminal/powershell [python3 -m smtpd -c DebuggingServer -n 127.0.0.1:1025] then run this smtp server
+
 from socket import *
 
-
+#def smtp_client(port, mailserver):
 def smtp_client(port=1025, mailserver='127.0.0.1'):
     msg = "\r\n My message is here!"
     endmsg = "\r\n.\r\n"
@@ -12,7 +14,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
     # Fill in start
     clientSocket = socket(AF_INET, SOCK_STREAM)
-    #clientSocket.connect((mailServer,port))
+
     clientSocket.connect((mailserver, port))
     #clientSocket.send(msg.encode())
     # Fill in end
@@ -33,7 +35,7 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 # Send MAIL FROM command and print server response.
 # Fill in start
 
-    mailFROMCommand = 'MAIL FROM <test@test.com> \r\n'
+    mailFROMCommand = 'MAIL FROM: <test@test.com> \r\n'
     clientSocket.send(mailFROMCommand.encode())
     recv2 = clientSocket.recv(1024).decode()
     print(recv2)
@@ -43,8 +45,8 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 
 # Send RCPT TO command and print server response.
 # Fill in start
-    rcptToCommand = 'RCPT TO <test@test.com> \r\n'
-    clientSocket.send(mailFROMCommand.encode())
+    rcptToCommand = 'RCPT TO: <test@test.com> \r\n'
+    clientSocket.send(rcptToCommand.encode())
     recv3 = clientSocket.recv(1024).decode()
     print(recv3)
     if recv3[:3] != '250':
@@ -64,29 +66,22 @@ def smtp_client(port=1025, mailserver='127.0.0.1'):
 # Send message data.
 # Fill in start
     clientSocket.send(msg.encode())
-    recv5 = clientSocket.recv(1024).decode()
-    print(recv5)
-    if recv5[:3] != '250':
-        print('250 reply not received from server.')
 # Fill in end
 
 # Message ends with a single period.
+
 # Fill in start
     clientSocket.send(endmsg.encode())
-    recv6 = clientSocket.recv(1024).decode()
-    print(recv6)
-    if recv6[:3] != '250':
-        print('250 reply not received from server.')
 # Fill in end
 
 # Send QUIT command and get server response.
 # Fill in start
     quitCommand = 'QUIT \r\n'
     clientSocket.send(quitCommand.encode())
-    recv7 = clientSocket.recv(1024).decode()
-    print(recv7)
-    if recv7[:3] != '221':
-        print('221 reply not received from server.')
+    recv5 = clientSocket.recv(1024).decode()
+    print(recv5)
+    if recv5[:3] != '250':
+        print('250 reply not received from server.')
     clientSocket.close()
 # Fill in end
 
